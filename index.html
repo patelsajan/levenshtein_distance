@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<body>
+	</body>
+	<script>
+		function levenshtein(a, b) {
+		  var matrix = [],
+			row,
+			i, j,
+			a_length = a.length,
+			b_length = b.length;
+
+		  if (!a_length)  
+			return b_length; 
+
+		  if (!b_length)  
+			return a_length; 
+
+		  for (j = 0; j <= b_length; j++) { matrix[j] = j; }
+
+		  for (i = 1; i <= a_length; i++) {
+			for (row = [i], j = 1; j <= b_length; j++) {
+			  row[j] = a[i - 1] === b[j - 1] ? matrix[j - 1] : Math.min(matrix[j - 1], matrix[j], row[j - 1]) + 1;
+			} matrix = row;
+		  }
+		return row[b_length];
+		}
+		
+		let input1 = document.createElement('input');
+		let input2 = document.createElement('input');
+		let button = document.createElement('button');
+		button.innerText = 'click';
+		button.onclick = () => {
+					document.body.removeChild(document.body.lastChild);
+					let result = levenshtein(input1.value, input2.value);
+					console.log('levenshtein distance: ', result);
+					document.body.append(result);
+				}
+		document.body.append('compare:  ',input1,'with:  ', input2,'  ',button, '      ','');
+
+		//tests
+		console.log(levenshtein('','wubbalubbadubdub'));
+		console.log(levenshtein('test','test'));
+		console.log(levenshtein('alazydogjumpedoveraquickfox',''));
+		console.log(levenshtein('cat','dog'));
+		console.log(levenshtein('dog','cat'));
+	</script>
+</html>
+
